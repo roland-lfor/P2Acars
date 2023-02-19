@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33214.272
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2Acars", "P2Acars\P2Acars.csproj", "{6D1C6BC0-6412-4270-A288-CB6F7AFD7B1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D8716A88-4FD0-4B25-ADF0-F1D82F74CE09}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.txt = ReadMe.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D1C6BC0-6412-4270-A288-CB6F7AFD7B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D1C6BC0-6412-4270-A288-CB6F7AFD7B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D1C6BC0-6412-4270-A288-CB6F7AFD7B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D1C6BC0-6412-4270-A288-CB6F7AFD7B1F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {39FF8DA4-63D3-4453-9BA4-91C0DE50097C}
+	EndGlobalSection
+EndGlobal
