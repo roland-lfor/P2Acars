@@ -1,13 +1,13 @@
 ====================================================
-P2Acars - © roland_lfor 2023
+			P2Acars - © roland_lfor 2023
 ====================================================
 
 Prerequisites
 -------------
 - You need a Hoppie account, see here: https://www.hoppie.nl/acars/system/register.html
 	You can use the same account for both your aircraft and P2Acars (you don't need 2)
-- Obviously you need to have Pilot2ATC program and a Hoppie compatible client
-	(On MSFS you have the Fenix A320, on X-Plane the Toliss for example)
+- Obviously you need to have Pilot2ATC program installed and a Hoppie compatible client
+	(for example on MSFS you have the Fenix A320, on X-Plane the Toliss )
 - An Internet connection to push messages through Hoppie server ;)
 
 	
