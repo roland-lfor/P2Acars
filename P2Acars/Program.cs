@@ -235,7 +235,6 @@ namespace P2Acars
 
         static void OnClearance(ref string s)
         {
-            
             string sTmp, sAirpt, sSid, sTrans, sRwy, sAlt, sFreq, sSquawk, sP2Amsg;
             
             string[] key1 = { "is cleared to " };                   // airport ICAO
@@ -243,7 +242,7 @@ namespace P2Acars
             string[] key3 = { "with the " };                        // Transition (Option)
             string[] key4 = { "expect departure runway " };         // rwy
             string[] key5 = { "climb to ", "climb and maintain " }; // initial ALT
-            string[] key6 = { "approach on ", "departure on "}; // next freq: 3 mots "decimal" (ou "point") 1 ou plusieurs mots et "."
+            string[] key6 = { "approach on ", "departure on ", "approach tower on "}; // next freq: 3 mots "decimal" (ou "point") 1 ou plusieurs mots et "."
             string[] key7 = {"squawk "};
 
             // Destination
