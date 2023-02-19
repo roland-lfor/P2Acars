@@ -39,12 +39,19 @@ namespace P2Acars
             }
             else
             {
-                Console.Write("Enter SIMBRIEF ID:\n");
-                sAtcPos = "P2A"+Console.ReadLine();
+                while (sAtcPos.Length == 3)
+                {
+                    Console.Write("Enter SIMBRIEF ID:\n");
+                    sAtcPos = "P2A" + Console.ReadLine();
+                }
             }
-#if ! DEBUG
-            Console.Write("Enter aircraft CALLSIGN:\n");
-            sCallsign = Console.ReadLine().ToUpper();
+#if !DEBUG
+            sCallsign = "";
+            while (sCallsign.Length < 4)
+            {
+                Console.Write("Enter aircraft CALLSIGN:\n");
+                sCallsign = Console.ReadLine().ToUpper();
+            }
 #endif
             Console.WriteLine();
             Console.Write("Your personal ATC: ");
