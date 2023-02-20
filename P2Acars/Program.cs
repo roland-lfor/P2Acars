@@ -212,6 +212,7 @@ namespace P2Acars
                                     else if(readAtc.Contains("descend to cross"))       OnStartDescent(ref readAtc);
                                     else if(readAtc.Contains("descend and maintain "))  OnDescend(ref readAtc);
                                     else if(readAtc.Contains("cleared for "))           OnClearedApp(ref readAtc);
+                                    else if(readAtc.Contains("clear for "))             OnClearedApp(ref readAtc);
                                     else if(readAtc.Contains("taxi to "))               OnTaxi2Gate(ref readAtc);
                                     else if(readAtc.Contains("contact"))                OnContactCenter(ref readAtc);
                                     else if(readAtc.Contains("turn "))                  OnTurn(ref readAtc);
@@ -241,7 +242,7 @@ namespace P2Acars
             string[] key2 = { "climb via the ", "fly the "};        // SID
             string[] key3 = { "with the " };                        // Transition (Option)
             string[] key4 = { "expect departure runway " };         // rwy
-            string[] key5 = { "climb to ", "climb and maintain " }; // initial ALT
+            string[] key5 = { "climb to ", "climb and maintain ", "maintain " }; // initial ALT
             string[] key6 = { "approach on ", "departure on ", "approach tower on "}; // next freq: 3 mots "decimal" (ou "point") 1 ou plusieurs mots et "."
             string[] key7 = {"squawk "};
 
@@ -276,13 +277,19 @@ namespace P2Acars
 
             // Rwy
             sRwy = sp.Word2DicUntil(ref s, "via", key1);
-            // Taxiways
-            sTaxiwys = sp.Word2DicUntil(ref s, "hold", key2);
-            spaceTaxiways(ref sTaxiwys);
+            // Taxiways OPT
+            sTaxiwys = "@" + sp.Word2DicUntil(ref s, "hold", key2) + "@";
+            if (sTaxiwys != "@@")
+            {
+                spaceTaxiways(ref sTaxiwys);
+                sTaxiwys = "via " + sTaxiwys;
+            }
+            else
+                sTaxiwys = "";
             // Hold short
             sHold = GetAllOf(ref s, key3);
 
-            sP2Amsg = $"/data2/{sendMsgID}//WU/TAXI RWY @{sRwy}@ via @{sTaxiwys}@ HOLD {sHold}@";
+            sP2Amsg = $"/data2/{sendMsgID}//WU/TAXI to RWY@{sRwy}@ {sTaxiwys} HOLD {sHold}@";
             CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
         }
@@ -332,24 +339,30 @@ namespace P2Acars
             string[] key3 = { "for the " };             // App
             string[] key4 = { "approach to runway " };  // RWY
 
-            // STAR : on doit faire en 2 passes !
-            sStar = sp.Word(ref s, key1, 1); // récupère le corps
-            if (sStar.Length > 2)
-            {
-                sStar = sStar.ToLower();
-                sStar += sp.Word2DicUntil(ref s, "arrival", new string[] {sStar});
-                sStar = sStar.ToUpper();
+            sStar = ""; sTrans1 = "";
+            if(s.Contains("arrival"))   // STAR OPT
+            { 
+                // STAR : on doit faire en 2 passes !
+                sStar = sp.Word(ref s, key1, 1); // récupère le corps
+                if (sStar.Length > 2)
+                {
+                    sStar = sStar.ToLower();
+                    sStar += sp.Word2DicUntil(ref s, "arrival", new string[] {sStar});
+                    sStar = "@" + sStar.ToUpper() + "@";
+                }
+                sTrans1 = "via @"+sp.Word(ref s, key2, 1)+"@";
+                sApp    = "to @" + sp.Word2DicUntil(ref s, "approach", key3);
             }
-            // FROM
-            sTrans1 = sp.Word(ref s, key2, 1);
-            // APP
-            sApp = sp.Word2DicUntil(ref s, "approach", key3);
-            // RWY
-            sRwy = sp.Word2DicUntil(ref s, "with", key4);
+            else
+            { 
+             // si pas de STAR: APP en 1er / RWY / Trans2 opt
+               sApp = "@" + sp.Word2DicUntil(ref s, "approach", key1);
+            }
+            sRwy = sp.Word2DicUntil(ref s, key2[0], key4);
             // TRANS
             sTrans2 = sp.Word(ref s, key2, 1);
 
-            sP2Amsg = $"/data2/{sendMsgID}//N/EXPECT @{sStar}@ via @{sTrans1}@ to @{sApp}@ RWY@{sRwy}@ trans @{sTrans2}@";
+            sP2Amsg = $"/data2/{sendMsgID}//N/EXPECT {sStar} {sTrans1} {sApp}@ RWY@{sRwy}@ trans @{sTrans2}@";
             CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
 
@@ -433,7 +446,8 @@ namespace P2Acars
             string[] key4 = { "with the " };
             string[] key5 = { "to cross " };
             string[] key6 = { "qnh is " };
- 
+
+            sTrans = "";
             // Cross 1
             sCross[0] = sp.Word(ref s, key1, 1);
             if (s.Contains(key1[0]))
@@ -453,8 +467,10 @@ namespace P2Acars
                 sStar += sp.Word2DicUntil(ref s, "arrival", new string[] {sStar});
                 sStar = sStar.ToUpper();
             }
-            // Trans
-            sTrans = sp.Word(ref s, key4, 1);
+            // Trans OPT
+            sTmp = sp.Word(ref s, key4, 1);
+            if (sTmp != "")
+                sTrans = " via " + sTmp;
             // Cross 2 (Opt)
             sTmp = sp.Word(ref s, key5, 1);
             if(sTmp != sFirstCross && sTmp.Length > 0)
@@ -465,7 +481,7 @@ namespace P2Acars
             // QNH
             sQnh = sp.Word2DicUntil(ref s, "at ", key6);
 
-            sP2Amsg = $"/data2/{sendMsgID}//WU/DESCEND TO {sCross[0]} @{sStar}@ VIA {sTrans} {sCross[1]} QNH @{sQnh}@";
+            sP2Amsg = $"/data2/{sendMsgID}//WU/DESCEND TO {sCross[0]} @{sStar}@{sTrans} {sCross[1]} QNH @{sQnh}@";
             CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
 
@@ -510,8 +526,8 @@ namespace P2Acars
             string[] key1 = { "contact " };
             string[] key2 = { " on " };
 
-            sCenter = sp.WordUntil(ref s, "on ", key1);
-            sFreq = sp.Word2DicAll(ref s, key2);
+            sCenter = sp.WordUntil(ref s, " on ", key1);
+            sFreq   = sp.Word2DicAll(ref s, key2);
             if (sFreq != "")
             { 
                 sP2Amsg = $"/data2/{sendMsgID}//N/CONTACT {sCenter}on @{sFreq}@";
@@ -523,7 +539,7 @@ namespace P2Acars
         static void OnClearedApp(ref string s)
         {
             string sApp, sRwy, sP2Amsg;
-            string[] key1 = { "cleared for the ", "cleared for " };
+            string[] key1 = { "cleared for the ", "cleared for ", "clear for " };
             string[] key2 = { "runway " };
             bool bContact = s.Contains("contact ");
 
