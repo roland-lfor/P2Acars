@@ -29,8 +29,8 @@ namespace P2Acars
         static void Main(string[] args)
         {
             Console.WriteLine();
-            Console.Write("        P2Acars version {0} © roland_lfor - 2023\n", Assembly.GetEntryAssembly().GetName().Version);
-
+            Console.WriteLine("        P2Acars version {0} © roland_lfor - 2023", Assembly.GetEntryAssembly().GetName().Version);
+            Console.WriteLine("             All rights reserved");
             if (args.Length > 0)
             {
                 // Simbrief ID passée
@@ -41,7 +41,7 @@ namespace P2Acars
             {
                 while (sAtcPos.Length == 3)
                 {
-                    Console.Write("Enter SIMBRIEF ID:\n");
+                    Console.WriteLine("Enter SIMBRIEF ID:");
                     sAtcPos = "P2A" + Console.ReadLine();
                 }
             }
@@ -441,8 +441,8 @@ namespace P2Acars
             string[] sCross = { "", "" };
             string sTmp, sStar, sTrans, sQnh, sP2Amsg, sFirstCross ="";
             string[] key1 = { "descend to cross ", "descend to " };
-            string[] key2 = { "at or ", "at " };
-            string[] key3 = { "then  descend via the " };
+            string[] key2 = {  "at " };
+            string[] key3 = { "descend via the " };
             string[] key4 = { "with the " };
             string[] key5 = { "to cross " };
             string[] key6 = { "qnh is " };
@@ -450,7 +450,7 @@ namespace P2Acars
             sTrans = "";
             // Cross 1
             sCross[0] = sp.Word(ref s, key1, 1);
-            if (s.Contains(key1[0]))
+            if (s.Contains(key2[0]))
             {
                 if (sCross[0].Length > 0)
                 {

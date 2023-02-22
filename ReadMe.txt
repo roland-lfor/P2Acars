@@ -26,7 +26,7 @@ How it works
 	2/ Your flight CALLSIGN, on which P2Acars messages will be send
 - They will be requested upon start from the console
 	=> to avoid the need to enter each time your SimBrief ID, 
-	you can pass it as an argument to PAcars.exe. 
+	you can pass it as an argument to P2Acars.exe. 
 	You can do that in a BAT file, or using FSUIPC auto start capabilities,
 	or maybe also in the EXE.xml of MSFS
 	
