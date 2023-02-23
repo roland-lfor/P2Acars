@@ -390,7 +390,7 @@ namespace P2Acars
         }
         static void OnTurn(ref string s)
         {
-            if (s.Contains("to return to"))
+            if (s.Contains("to return to"))     // Filter "You are off course msg
                 return;
 
             string sHdg, sP2Amsg, sThen = "";
@@ -513,9 +513,9 @@ namespace P2Acars
             spaceTaxiways(ref sTaxiwys);
 
             if (bHold)
-                sP2Amsg = $"/data2/{sendMsgID}//WU/TAXI TO GATE @{sGate}@ VIA @{sTaxiwys}@ HOLD {sHold}@";
+                sP2Amsg = $"/data2/{sendMsgID}//WU/TAXI TO @{sGate}@ VIA @{sTaxiwys}@ HOLD {sHold}@";
             else
-                 sP2Amsg = $"/data2/{sendMsgID}//WU/TAXI TO GATE @{sGate}@ VIA @{sTaxiwys}@";
+                 sP2Amsg = $"/data2/{sendMsgID}//WU/TAXI TO @{sGate}@ VIA @{sTaxiwys}@";
             CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
         }
