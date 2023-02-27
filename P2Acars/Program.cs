@@ -10,6 +10,7 @@ namespace P2Acars
     class Program
     {
         static readonly HttpClient hoppie = new HttpClient();
+        static readonly HttpClient airmate = new HttpClient();
         private static Timer pollTimer;
         static readonly bool bTrace = true;
         static DateTime lastTime = DateTime.Now;
@@ -36,6 +37,22 @@ namespace P2Acars
                 // Simbrief ID passée
                 if (args[0].Length > 3)
                     sAtcPos += args[0];
+
+                if (args.Length > 1)
+                {
+                    // callsign passé
+                    if (args[1].Length > 3)
+                        sCallsign = args[1];
+                }
+                else
+                {
+                    sCallsign = "";
+                    while (sCallsign.Length < 4)
+                    {
+                        Console.Write("Enter aircraft CALLSIGN:\n");
+                        sCallsign = Console.ReadLine().ToUpper();
+                    }
+                }
             }
             else
             {
@@ -45,14 +62,14 @@ namespace P2Acars
                     sAtcPos = "P2A" + Console.ReadLine();
                 }
             }
-#if !DEBUG
-            sCallsign = "";
-            while (sCallsign.Length < 4)
-            {
-                Console.Write("Enter aircraft CALLSIGN:\n");
-                sCallsign = Console.ReadLine().ToUpper();
-            }
-#endif
+//#if !DEBUG
+//            sCallsign = "";
+//            while (sCallsign.Length < 4)
+//            {
+//                Console.Write("Enter aircraft CALLSIGN:\n");
+//                sCallsign = Console.ReadLine().ToUpper();
+//            }
+//#endif
             Console.WriteLine();
             Console.Write("Your personal ATC: ");
             Console.ForegroundColor = ConsoleColor.Green;
