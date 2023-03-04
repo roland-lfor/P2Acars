@@ -63,6 +63,7 @@ namespace P2Acars
             Add("below", "BELOW ");
             // Approches
             Add("ils", "ILS");
+            Add("igs", "IGS");
             Add("vor", "VOR");
             Add("vortac", "VORTAC");
             Add("rnav", "RNAV");
