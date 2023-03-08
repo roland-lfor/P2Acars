@@ -227,6 +227,7 @@ namespace P2Acars
                                     else if(readAtc.Contains("expect "))                OnExpect(ref readAtc);
                                     else if(readAtc.Contains("climb "))                 OnClimbFL(ref readAtc);
                                     else if(readAtc.Contains("descend to cross"))       OnStartDescent(ref readAtc);
+                                    else if(readAtc.Contains("descend via the"))        OnStartDescent(ref readAtc);
                                     else if(readAtc.Contains("descend and maintain "))  OnDescend(ref readAtc);
                                     else if(readAtc.Contains("cleared for "))           OnClearedApp(ref readAtc);
                                     else if(readAtc.Contains("clear for "))             OnClearedApp(ref readAtc);
@@ -280,7 +281,7 @@ namespace P2Acars
             // SQUAWK
             sSquawk = sp.Word2Dic(ref s, key7, 4);
 
-            sP2Amsg = $"/data2/{sendMsgID}//N/CLEARED to @{sAirpt}@ @{sSid}@{sTrans} RWY@{sRwy}@ ALT {sAlt} DEP @{sFreq}@ SQUAWK @{sSquawk}@";
+            sP2Amsg = $"/data2/{sendMsgID}//N/CLR to @{sAirpt}@ @{sSid}@{sTrans} RWY@{sRwy}@ ALT {sAlt} DEP @{sFreq}@ SQUAWK @{sSquawk}@";
             CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
         }
@@ -377,9 +378,14 @@ namespace P2Acars
             }
             sRwy = sp.Word2DicUntil(ref s, key2[0], key4);
             // TRANS
-            sTrans2 = sp.Word(ref s, key2, 1);
+            sTrans2 = "";
+            sTmp = sp.Word(ref s, key2, 1);
+            if(sTmp != "")
+            {
+                sTrans2 = $" trans @{sTmp}@";
+            }
 
-            sP2Amsg = $"/data2/{sendMsgID}//N/EXPECT {sStar} {sTrans1} {sApp}@ RWY@{sRwy}@ trans @{sTrans2}@";
+            sP2Amsg = $"/data2/{sendMsgID}//N/EXPECT {sStar} {sTrans1} {sApp}@ RWY@{sRwy}@{sTrans2}";
             CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
 
@@ -566,7 +572,7 @@ namespace P2Acars
             else 
                 sRwy = sp.Word2DicUntil(ref s, "at ", key2);
 
-            sP2Amsg = $"/data2/{sendMsgID}//N/CLEARED for {sApp} to RWY@{sRwy}@";
+            sP2Amsg = $"/data2/{sendMsgID}//N/CLR for {sApp} to RWY@{sRwy}@";
             CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
 
