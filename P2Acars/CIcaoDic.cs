@@ -42,7 +42,8 @@ namespace P2Acars
             Add("uniform"    , "U");
             Add("victor"     , "V");
             Add("whiskey"    , "W");
-            Add("x-Ray"      , "X");
+            Add("x-ray"      , "X");
+            Add("ex-ray"     , "X");
             Add("yankee"     , "Y");
             Add("zulu"       , "Z");
             // Freq

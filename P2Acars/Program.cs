@@ -352,7 +352,7 @@ namespace P2Acars
         static void OnExpect(ref string s) // N flag
         {
             string sStar, sApp, sTrans1, sTrans2, sRwy, sP2Amsg, sTmp;
-            string[] key1 = { "expect the ","expect direct " };          // STAR
+            string[] key1 = { "expect the ","expect direct ","expect vectors to the " };          // STAR
             string[] key2 = { "with the " };            // Trans
             string[] key3 = { "for the " };             // App
             string[] key4 = { "approach to runway " };  // RWY

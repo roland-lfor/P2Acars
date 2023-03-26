@@ -1,13 +1,13 @@
 ====================================================
-			P2Acars - © roland_lfor 2023
+		P2Acars - © roland_lfor 2023
 ====================================================
 
  Prerequisites
 -------------------------------
 - You need a Hoppie account, see here: https://www.hoppie.nl/acars/system/register.html
 	You can use the same account for both your aircraft and P2Acars (you don't need 2)
-- Obviously you need to have and use Pilot2ATC program, and a Hoppie compatible client
-	(for example on MSFS you have the Fenix A320, on X-Plane the Toliss )
+- Obviously you need to own and use Pilot2ATC program, and a Hoppie compatible client
+	For example on MSFS you have the Fenix A320 and FBW A32X, on X-Plane the Toliss
 - An Internet connection to push messages through Hoppie server ;)
 	
  Installation and configuration
@@ -31,7 +31,7 @@
 	You can also pass the callsign as a 2nd argument (useful only if you always use the same).
 	Cmd line sample with the 2 args: "P2Acars 454545 BAW7845D"
 	
- Global Usage
+ Usage Overview
 -------------------------------
 1/ Start you sim, start P2Acars (and enter info) and Pilot2ATC
 2/ Once in your aircraft (any Hoppie compatible client), you have to:
