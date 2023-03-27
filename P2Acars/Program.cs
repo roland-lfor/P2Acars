@@ -61,6 +61,12 @@ namespace P2Acars
                     Console.WriteLine("Enter SIMBRIEF ID:");
                     sAtcPos = "P2A" + Console.ReadLine();
                 }
+                sCallsign = "";
+                while (sCallsign.Length < 4)
+                {
+                    Console.Write("Enter aircraft CALLSIGN:\n");
+                    sCallsign = Console.ReadLine().ToUpper();
+                }
             }
 //#if !DEBUG
 //            sCallsign = "";
