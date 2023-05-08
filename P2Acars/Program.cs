@@ -14,7 +14,7 @@ namespace P2Acars
         private static Timer pollTimer;
         static readonly bool bTrace = true;
         static DateTime lastTime = DateTime.Now;
-        static string sAtcPos = "P2A";
+        static string sAtcPos = "PA";
         static Int32 acrftID, sendMsgID = 1;        // compteur de messages envoyés (autre que Poll)
         static Int32 nP2AlastRead = -1;             // Dernière ligne lue dans le log P2A
         static bool bAcftConnected = false;
@@ -59,7 +59,7 @@ namespace P2Acars
                 while (sAtcPos.Length == 3)
                 {
                     Console.WriteLine("Enter SIMBRIEF ID:");
-                    sAtcPos = "P2A" + Console.ReadLine();
+                    sAtcPos = sAtcPos + Console.ReadLine();
                 }
                 sCallsign = "";
                 while (sCallsign.Length < 4)
