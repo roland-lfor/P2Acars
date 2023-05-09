@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace P2Acars
 {
@@ -21,14 +18,20 @@ namespace P2Acars
 
     public class CAcarMsg
     {
-        static readonly string sAcarHeader = "http://www.hoppie.nl/acars/system/connect.html?logon=4QtuMHquHMaVL";
+ //       static readonly string sAcarHeader = "http://www.hoppie.nl/acars/system/connect.html?logon=4QtuMHquHMaVL";
+        static readonly string sAcarHeader = "http://www.hoppie.nl/acars/system/connect.html?logon=";
         //readonly Type acarType = typeof(eAcarType);
         //acarType etype;
-        public string sPacket, sFrom, sTo, sType, sFull;
+        public string sPacket, sFrom, sTo, sType, sFull, sLogon;
         
-        public CAcarMsg(string Raw) { DecodeIn(Raw);  }
-        public CAcarMsg(string type, string from, string to, string paquet)
+        public CAcarMsg(string sId, string Raw) 
         {
+            sLogon = sId;
+            DecodeIn(Raw);  
+        }
+        public CAcarMsg(string sId, string type, string from, string to, string paquet)
+        {
+            sLogon = sId;
             sType   = type;
             sFrom   = from;
             sTo     = to;
@@ -66,7 +69,7 @@ namespace P2Acars
                 bRet = false;
             else
             {
-                sFull = sAcarHeader+"&from="+sFrom+"&to="+sTo+"&type="+sType+"&packet="+ sPacket;
+                sFull = sAcarHeader+sLogon+"&from="+sFrom+"&to="+sTo+"&type="+sType+"&packet="+ sPacket;
             }
             return sFull;
         }

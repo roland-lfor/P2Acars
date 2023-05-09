@@ -20,24 +20,23 @@
 
  Startup
 -------------------------------
-- P2Acars needs 2 input from you at startup:
-	1/ Your SimBrief ID (only to grant a unique ATC name within Hoppie network)
-	2/ Your flight CALLSIGN, on which P2Acars messages will be send
-  They will be requested upon start from the console
-	=> to avoid the need to enter each time your SimBrief ID, 
-	 you can pass it as 1st argument to P2Acars.exe
-	You can do that in a BAT file, or using FSUIPC auto start capabilities,
+- P2Acars needs two inputs from you at startup:
+	1/ you Hoppie Logon
+	2/ Your flight CALLSIGN
+  They will be requested upon start from the P2Acars console
+	=> to avoid the need to enter each time your Hoppie Logon, 
+	 you can pass it as an argument to P2Acars.exe
+  You can do that in a BAT file, or using FSUIPC auto start capabilities,
 	 or maybe also in the EXE.xml of MSFS.
-	You can also pass the callsign as a 2nd argument (useful only if you always use the same).
-	Cmd line sample with the 2 args: "P2Acars 454545 BAW7845D"
+  Cmd line sample: "P2Acars 75dOZ7125w"
 	
  Usage Overview
 -------------------------------
-1/ Start you sim, start P2Acars (and enter info) and Pilot2ATC
+1/ Start you sim, start P2Acars (enter your Hoppie Logon & Callsign), Start Pilot2ATC
 2/ Once in your aircraft (any Hoppie compatible client), you have to:
 	a/ Enter your correct CALLSIGN in the FMS/INIT page (the one you set in P2Acars)
 	b/ Request connection to the ATC station (ATC MSG page, Connection->Notification in the A320)
-	using the name shown in GREEN in P2Acars console
+	using the 4 digits identification number shown in GREEN in P2Acars console
 	=> You won't receive any messages until your request is received and approved
 	via confirmation message "LOGON ACCEPTED" that should be displayed on ARCDU
 3/ Run your flight as usual with Pilot2ATC discussion, and important messages

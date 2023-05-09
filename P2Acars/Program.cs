@@ -24,6 +24,7 @@ namespace P2Acars
         static readonly string sP2Alog = sP2Afolder + "\\" + sP2Afile;
         static readonly CIcaoDic icaoDic = new CIcaoDic();
         static string sCallsign = "AFR278";         // affectation en DEBUG only
+        static string sHoppieLogon = "";
         static readonly char[] sep = { ' ', ',', '.' };
         static CSplitter sp = new CSplitter(icaoDic);
 
@@ -32,50 +33,33 @@ namespace P2Acars
             Console.WriteLine();
             Console.WriteLine("        P2Acars version {0} © roland_lfor - 2023", Assembly.GetEntryAssembly().GetName().Version);
             Console.WriteLine("             All rights reserved");
+
             if (args.Length > 0)
             {
-                // Simbrief ID passée
-                if (args[0].Length > 3)
-                    sAtcPos += args[0];
-
-                if (args.Length > 1)
-                {
-                    // callsign passé
-                    if (args[1].Length > 3)
-                        sCallsign = args[1];
-                }
-                else
-                {
-                    sCallsign = "";
-                    while (sCallsign.Length < 4)
-                    {
-                        Console.Write("Enter aircraft CALLSIGN:\n");
-                        sCallsign = Console.ReadLine().ToUpper();
-                    }
-                }
+                // Hoppie Logon passé
+                if (args[0].Length > 6)
+                    sHoppieLogon = args[0];
             }
             else
             {
-                while (sAtcPos.Length == 3)
+                while (sHoppieLogon.Length < 6)
                 {
-                    Console.WriteLine("Enter SIMBRIEF ID:");
-                    sAtcPos = sAtcPos + Console.ReadLine();
-                }
-                sCallsign = "";
-                while (sCallsign.Length < 4)
-                {
-                    Console.Write("Enter aircraft CALLSIGN:\n");
-                    sCallsign = Console.ReadLine().ToUpper();
+                    Console.Write("Enter you Hoppie LOGON:\n");
+                    sHoppieLogon = Console.ReadLine();
                 }
             }
-//#if !DEBUG
-//            sCallsign = "";
-//            while (sCallsign.Length < 4)
-//            {
-//                Console.Write("Enter aircraft CALLSIGN:\n");
-//                sCallsign = Console.ReadLine().ToUpper();
-//            }
-//#endif
+
+            sCallsign = "";
+            while (sCallsign.Length < 5)
+            {
+                Console.Write("Enter your CALLSIGN:\n");
+                sCallsign = Console.ReadLine().ToUpper();
+            }
+ 
+
+            // New method for ATC position
+            sAtcPos = GetTick4();
+
             Console.WriteLine();
             Console.Write("Your personal ATC: ");
             Console.ForegroundColor = ConsoleColor.Green;
@@ -84,6 +68,10 @@ namespace P2Acars
             Console.Write("Target Callsign: ");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("{0}\n", sCallsign);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("Your Hoppie LOGON: ");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("{0}\n", sHoppieLogon);
             Console.ForegroundColor = ConsoleColor.Gray;
 
             // Timer 2 Poll message from Hoppie (to accept connection mostly)
@@ -110,7 +98,7 @@ namespace P2Acars
 
         static async void PollHoppie()
         {
-            CAcarMsg msg = new CAcarMsg("poll", sAtcPos, sAtcPos, "");
+            CAcarMsg msg = new CAcarMsg(sHoppieLogon, "poll", sAtcPos, sAtcPos, "");
 
             try
             {
@@ -184,7 +172,7 @@ namespace P2Acars
             {
                 acrftID = int.Parse(saID);  // mémorise pour tous les envois suivants
                 paquet = String.Format(@"/data2/{0}/{1}/NE/LOGON {2}", sendMsgID, saID, choice);
-                CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sTarget, paquet);
+                CAcarMsg msg = new CAcarMsg(sHoppieLogon, "cpdlc", sAtcPos, sTarget, paquet);
                 PostHoppie(msg);
             }
         }
@@ -288,7 +276,7 @@ namespace P2Acars
             sSquawk = sp.Word2Dic(ref s, key7, 4);
 
             sP2Amsg = $"/data2/{sendMsgID}//N/CLR to @{sAirpt}@ @{sSid}@{sTrans} RWY@{sRwy}@ ALT {sAlt} DEP @{sFreq}@ SQUAWK @{sSquawk}@";
-            CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
+            CAcarMsg msg = new CAcarMsg(sHoppieLogon, "cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
         }
 
@@ -314,7 +302,7 @@ namespace P2Acars
             sHold = GetAllOf(ref s, key3);
 
             sP2Amsg = $"/data2/{sendMsgID}//WU/TAXI to RWY@{sRwy}@ {sTaxiwys} HOLD {sHold}@";
-            CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
+            CAcarMsg msg = new CAcarMsg(sHoppieLogon, "cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
         }
 
@@ -392,7 +380,7 @@ namespace P2Acars
             }
 
             sP2Amsg = $"/data2/{sendMsgID}//N/EXPECT {sStar} {sTrans1} {sApp}@ RWY@{sRwy}@{sTrans2}";
-            CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
+            CAcarMsg msg = new CAcarMsg(sHoppieLogon, "cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
 
             if (s.Contains("contact "))
@@ -411,7 +399,7 @@ namespace P2Acars
                 sAlt = FixAltitude( sp.Word2DicAll(ref s, key1));
 
             sP2Amsg = $"/data2/{sendMsgID}//WU/CLIMB TO {sAlt}";
-            CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
+            CAcarMsg msg = new CAcarMsg(sHoppieLogon, "cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
 
             if (bContact)
@@ -444,7 +432,7 @@ namespace P2Acars
                 sThen = " then " + sp.Word2DicAll(ref s, key2);
 
             sP2Amsg = $"/data2/{sendMsgID}//N/TURN {sHdg}@{sThen}";
-            CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
+            CAcarMsg msg = new CAcarMsg(sHoppieLogon, "cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
 
             if (bContact)
@@ -458,7 +446,7 @@ namespace P2Acars
             sAlt = FixAltitude(sp.Word2DicAll(ref s, key1));
 
             sP2Amsg = $"/data2/{sendMsgID}//WU/CLIMB TO {sAlt}";
-            CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
+            CAcarMsg msg = new CAcarMsg(sHoppieLogon, "cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
 
             if (s.Contains("contact "))
@@ -511,7 +499,7 @@ namespace P2Acars
             sQnh = sp.Word2DicUntil(ref s, "at ", key6);
 
             sP2Amsg = $"/data2/{sendMsgID}//WU/DESCEND TO {sCross[0]} @{sStar}@{sTrans} {sCross[1]} QNH @{sQnh}@";
-            CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
+            CAcarMsg msg = new CAcarMsg(sHoppieLogon, "cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
 
         }
@@ -545,7 +533,7 @@ namespace P2Acars
                 sP2Amsg = $"/data2/{sendMsgID}//WU/TAXI TO @{sGate}@ VIA @{sTaxiwys}@ HOLD {sHold}@";
             else
                  sP2Amsg = $"/data2/{sendMsgID}//WU/TAXI TO @{sGate}@ VIA @{sTaxiwys}@";
-            CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
+            CAcarMsg msg = new CAcarMsg(sHoppieLogon, "cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
         }
 
@@ -560,7 +548,7 @@ namespace P2Acars
             if (sFreq != "")
             { 
                 sP2Amsg = $"/data2/{sendMsgID}//N/CONTACT {sCenter}on @{sFreq}@";
-                CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
+                CAcarMsg msg = new CAcarMsg(sHoppieLogon, "cpdlc", sAtcPos, sCallsign, sP2Amsg);
                 PostHoppie(msg);
             }
         }
@@ -579,7 +567,7 @@ namespace P2Acars
                 sRwy = sp.Word2DicUntil(ref s, "at ", key2);
 
             sP2Amsg = $"/data2/{sendMsgID}//N/CLR for {sApp} to RWY@{sRwy}@";
-            CAcarMsg msg = new CAcarMsg("cpdlc", sAtcPos, sCallsign, sP2Amsg);
+            CAcarMsg msg = new CAcarMsg(sHoppieLogon, "cpdlc", sAtcPos, sCallsign, sP2Amsg);
             PostHoppie(msg);
 
             if (bContact)
@@ -636,6 +624,14 @@ namespace P2Acars
                     sfix += "000@FT";
             }
             return sfix;
+        }
+
+        static String GetTick4() 
+        {
+            int iTick = Environment.TickCount;
+            String sTick = iTick.ToString();
+            sTick = sTick.Substring(sTick.Length - 4, 4);
+            return sTick;
         }
     }
 }
