@@ -21,14 +21,14 @@
  Startup
 -------------------------------
 - P2Acars needs two inputs from you at startup:
-	1/ you Hoppie Logon
+	1/ your Hoppie Logon
 	2/ Your flight CALLSIGN
-  They will be requested upon start from the P2Acars console
-	=> to avoid the need to enter each time your Hoppie Logon, 
-	 you can pass it as an argument to P2Acars.exe
+  They will be requested upon start from the P2Acars console,
+  OR you can pass them optionnaly as arguments to P2Acars.exe:
+	1st arg must be Hoppie Logon and 2nd the Callsign.
   You can do that in a BAT file, or using FSUIPC auto start capabilities,
 	 or maybe also in the EXE.xml of MSFS.
-  Cmd line sample: "P2Acars 75dOZ7125w"
+  Cmd line sample with both args: "P2Acars 75dOZ7125w BAW4578T"
 	
  Usage Overview
 -------------------------------

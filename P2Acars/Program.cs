@@ -23,9 +23,9 @@ namespace P2Acars
         static readonly string sP2Afile = "P2AConversation.txt";
         static readonly string sP2Alog = sP2Afolder + "\\" + sP2Afile;
         static readonly CIcaoDic icaoDic = new CIcaoDic();
-        static string sCallsign = "AFR278";         // affectation en DEBUG only
-        static string sHoppieLogon = "";
-        static readonly char[] sep = { ' ', ',', '.' };
+        static string sCallsign     = "";            // arg[1] optionnel
+        static string sHoppieLogon  = "";           // arg[0] optionnel
+        static readonly char[] sep  = { ' ', ',', '.' };
         static CSplitter sp = new CSplitter(icaoDic);
 
         static void Main(string[] args)
@@ -36,11 +36,19 @@ namespace P2Acars
 
             if (args.Length > 0)
             {
-                // Hoppie Logon passé
+                // Hoppie Logon passé en 1
                 if (args[0].Length > 6)
                     sHoppieLogon = args[0];
+
+                if (args.Length > 1) // callsign passé en 2
+                {
+                    if (args[1].Length > 5)
+                        sCallsign = args[1];
+                }
             }
-            else
+
+            // Manual input
+            if (sHoppieLogon == "")
             {
                 while (sHoppieLogon.Length < 6)
                 {
@@ -49,15 +57,16 @@ namespace P2Acars
                 }
             }
 
-            sCallsign = "";
-            while (sCallsign.Length < 5)
-            {
-                Console.Write("Enter your CALLSIGN:\n");
-                sCallsign = Console.ReadLine().ToUpper();
+            if(sCallsign == "")
+            { 
+                while (sCallsign.Length < 5)
+                {
+                    Console.Write("Enter your CALLSIGN:\n");
+                    sCallsign = Console.ReadLine().ToUpper();
+                }
             }
- 
 
-            // New method for ATC position
+            // New method for ATC name
             sAtcPos = GetTick4();
 
             Console.WriteLine();
