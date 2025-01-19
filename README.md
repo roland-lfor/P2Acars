@@ -31,12 +31,15 @@
  Usage Overview
 -------------------------------
 1/ Start you sim, start P2Acars (enter your Hoppie Logon & Callsign), Start Pilot2ATC
+
 2/ Once in your aircraft (any Hoppie compatible client), you have to:
 	a/ Enter your correct CALLSIGN in the FMS/INIT page (the one you set in P2Acars)
 	b/ Request connection to the ATC station (ATC MSG page, Connection->Notification in the A320)
 	using the 4 digits identification number shown in GREEN in P2Acars console
 	=> You won't receive any messages until your request is received and approved
 	via confirmation message "LOGON ACCEPTED" that should be displayed on ARCDU
+ 
 3/ Run your flight as usual with Pilot2ATC discussion, and important messages
 	will be send to your ARCDU. Some of them will require an answer (Stdbye / Wilco / Unable)
+ 
 4/ If you request disconnection, P2Acars message broadcast is stopped
